@@ -178,4 +178,35 @@ void Lexico_analisador(char comando[500])
         }//fin del while
         /*** Aqui validamos y hacemos las acciones para es comando -size +unit -path +type ***/
     }//fin el if de FDISK
+    else if(strcasecmp(token,"mount")==0)
+    {
+        token = strtok(NULL,"::");
+        while(token!=NULL)
+        {
+            if(strcasecmp(token,"-path")==0)
+            {
+                token = strtok(NULL," ");
+                token+=2;
+                if(token[strlen(token)-1]=='\"')
+                {
+                    token[strlen(token)-1]='\0';
+                }
+                strcpy(dir_disco,token);
+                printf("Tengo esto del paht: %s\n",dir_disco);/*** Lo tengo que quitar ***/
+
+            }
+            else if(strcasecmp(token,"-name")==0)
+            {
+                token = strtok(NULL," ");
+                token++;
+                strcpy(name,token);
+                printf("El nombre es: %s\n",token);/*** Esto lo tengo que borrar ***/
+            }
+            else
+            {
+                printf("No se reconocio el Parametro: %s",token);
+            }
+            token = strtok(NULL,"::");
+        }//fin del while
+    }//fin del if de MOUNT
 }
