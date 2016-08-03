@@ -31,6 +31,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="acciones_disco.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="acciones_disco.h" />
 		<Unit filename="lexico.c">
 			<Option compilerVar="CC" />
 		</Unit>
