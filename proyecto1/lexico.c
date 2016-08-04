@@ -28,15 +28,15 @@ void Lexico_analisador(char comando[500])
         return;
     }
     /*** Varialbes para almacenar los datos analizados ***/
-    char tam[20];
-    char unit[3];
-    char dir_disco[200];
-    char name[50];
-    char type[3];
-    char fit[4];
-    char eliminar[6];
-    char add[20];
-    char umount[8];
+    char tam[20]="\0";
+    char unit[3]="\0";
+    char dir_disco[200]="\0";
+    char name[50]="\0";
+    char type[3]="\0";
+    char fit[4]="\0";
+    char eliminar[6]="\0";
+    char add[20]="\0";
+    char umount[8]="\0";
     /*** Fin ***/
 
     if(strcasecmp(token,"mkdisk")==0)
@@ -71,9 +71,13 @@ void Lexico_analisador(char comando[500])
             else if(strcasecmp(token,"-name")==0)
             {
                 token = strtok(NULL," ");
-                token++;
+                token+=2;
+                if(token[strlen(token)-1]=='\"')
+                {
+                    token[strlen(token)-1]='\0';
+                }
                 strcpy(name,token);
-                printf("El nombre es: %s",token);/*** Esto lo tengo que borrar ***/
+                printf("El nombre es: %s\n",token);/*** Esto lo tengo que borrar ***/
             }
             else
             {
@@ -82,7 +86,34 @@ void Lexico_analisador(char comando[500])
             token = strtok(NULL,"::");
         }//fin wile
         /*** Aqui va la validacion de los datos -size +unit -path -name y su respectiva accion ***/
-        AD_crearDir(dir_disco);
+        if(strcasecmp(tam,"")!=0 & strcasecmp(dir_disco,"")!=0 & strcasecmp(name,"")!=0)
+        {
+            AD_crearDir(dir_disco);
+            int tamano;
+            tamano = (int) strtol(tam, (char **)NULL, 10);
+            if(strcasecmp(unit,"k")==0)
+            {
+
+            }
+            else if(strcasecmp(unit,"m")==0)
+            {
+                tamano = tamano * 1024;
+            }
+            else if(strcasecmp(unit,"\0")==0)
+            {
+                tamano = tamano * 1024;
+            }
+            else
+            {
+                printf("Error no se reconoce el prefijo del tamaño: %s\n",unit);
+                return;
+            }
+            AD_crearDisco(dir_disco,name,tamano);
+        }
+        else
+        {
+            printf("Faltan parametros obligatorios \n");
+        }
         /*** Fin ***/
     }//fin if de MKDISK
     else if(strcasecmp(token,"rmdisk")==0)
@@ -168,7 +199,11 @@ void Lexico_analisador(char comando[500])
             else if(strcasecmp(token,"-name")==0)
             {
                 token = strtok(NULL," ");
-                token++;
+                token+=2;
+                if(token[strlen(token)-1]=='\"')
+                {
+                    token[strlen(token)-1]='\0';
+                }
                 strcpy(name,token);
                 printf("El nombre es: %s\n",token);/*** Esto lo tengo que borrar ***/
             }
@@ -186,7 +221,64 @@ void Lexico_analisador(char comando[500])
             token = strtok(NULL,"::");
         }//fin del while
         /*** Aqui validamos y hacemos las acciones para es comando -size +unit -path +type ***/
+        if(strcasecmp(tam,"")!=0 & strcasecmp(dir_disco,"")!=0 & strcasecmp(name,"")!=0)
+        {
+            int tamano;
+            tamano = (int) strtol(tam, (char **)NULL, 10);
+            if(strcasecmp(unit,"b")==0)
+            {
 
+            }
+            else if(strcasecmp(unit,"k")==0)
+            {
+                tamano = tamano * 1024;
+            }
+            else if(strcasecmp(unit,"m")==0)
+            {
+                tamano = tamano * 1024 * 1024;
+            }
+            else if(strcasecmp(unit,"\0")==0)
+            {
+                tamano = tamano * 1024;
+            }
+            else
+            {
+                printf("Error no se reconoce el prefijo del tamaño: %s\n",unit);
+                return;
+            }
+
+            if((strcasecmp(type,"p")==0) | (strcasecmp(type,"e")==0) | (strcasecmp(type,"l")==0))
+            {}
+            else if(strcasecmp(type,"\0")==0)
+            {
+                strcpy(type,"p");
+            }
+            else
+            {
+                printf("El valor de TYPE no es permitido: %s\n",type);
+                return;
+            }
+
+            if(strcasecmp(fit,"bf")==0 | strcasecmp(fit,"ff")==0 | strcasecmp(fit,"wf")==0)
+            {
+
+            }
+            else if(strcasecmp(type,"\0")==0)
+            {
+                strcpy(fit,"wf");
+            }
+            else
+            {
+                printf("El valor de FIT no es permitido: %s\n",fit);
+            }
+
+
+
+        }
+        else
+        {
+            printf("Faltan Parametros Obligatorios\n");
+        }
         /*** Fin ***/
     }//fin el if de FDISK
     else if(strcasecmp(token,"mount")==0)
@@ -234,5 +326,9 @@ void Lexico_analisador(char comando[500])
             }
             token = strtok(NULL,"::");
         }
+    }
+    else
+    {
+        printf("No se reconocio el comando principal\n");
     }
 }

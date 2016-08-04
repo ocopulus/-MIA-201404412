@@ -35,6 +35,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="acciones_disco.h" />
+		<Unit filename="estructuras.h" />
 		<Unit filename="lexico.c">
 			<Option compilerVar="CC" />
 		</Unit>
