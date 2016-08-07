@@ -9,34 +9,20 @@
 
 int main()
 {
-   char str[80] = "This is  www.tutorialspoint.com - website";
-   const char s[2] = " ";
-   char *token;
-
-   /* get the first token */
-   token = strtok(str, s);
-
-   /* walk through other tokens */
-   /*while( token != NULL )
-   {
-      printf( " %s\n", token );
-
-      token = strtok(NULL, s);
-   } */
-
-    /*char pala[300];
-    char *p = "puta mierda;";
-    strcpy(pala,p);
-    printf(pala);*/
-    char p[50] = "hola";
-    char *d = "hola";
-    if(strcasecmp(p,"Hola")==0)
+    srand(time(NULL));
+    bool menu = true;
+    int i = 1;
+    while (menu)
     {
-        printf("Es igual\n");
+        Lexico_entrada();
+        printf("\n\nIngrese 1 si desea continuar \n Cuarlquier numero si desea salir\n");
+        fflush(stdin);
+        scanf(" %i", &i);
+        if(i!=1)
+        {
+            menu = false;
+        }
     }
-    else
-    printf("No es igual\n");
-    Lexico_entrada();
    return 0;
 }
 

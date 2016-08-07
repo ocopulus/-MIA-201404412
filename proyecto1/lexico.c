@@ -259,21 +259,47 @@ void Lexico_analisador(char comando[500])
                 return;
             }
 
-            if(strcasecmp(fit,"bf")==0 | strcasecmp(fit,"ff")==0 | strcasecmp(fit,"wf")==0)
+            if((strcasecmp(fit,"bf")==0) | (strcasecmp(fit,"ff")==0) | (strcasecmp(fit,"wf")==0))
             {
 
             }
-            else if(strcasecmp(type,"\0")==0)
+            else if(strcasecmp(fit,"\0")==0)
             {
                 strcpy(fit,"wf");
             }
             else
             {
                 printf("El valor de FIT no es permitido: %s\n",fit);
+                return;
             }
 
+            if(strcasecmp(eliminar,"fast")==0)
+            {
+                /*** Metodo para eliminar rapido ***/
+                return;
+            }
+            else if(strcasecmp(eliminar,"full")==0)
+            {
+                /*** Metodo para eliminar completo ***/
+                return;
+            }
+            else if(strcasecmp(eliminar,"\0")==0)
+            {
+                //No hago nada y listo xD
+            }
+            else
+            {
+                printf("El valor de Delete no es permitido: %s\n",eliminar);
+            }
 
+            if(strcasecmp(add,"\0")!=0)
+            { /*** Accion el comando add ***/
+                printf("Vino  el ADD\n");
+                return;
+            }
 
+            /*** Aqui va la accion de acrear la particon ***/
+            AD_CrearParticion(name,tamano,fit,type,dir_disco); /*** Llamada al metodo crear Particioens ***/
         }
         else
         {
