@@ -8,7 +8,7 @@
 #include "lexico.h"
 
 int main()
-{
+{ char d; char f[5] = "df";
     srand(time(NULL));
     bool menu = true;
     int i = 1;

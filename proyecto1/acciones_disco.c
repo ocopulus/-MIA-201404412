@@ -71,31 +71,167 @@ void AD_CrearParticion(char name[50],int tam, char fit[3], char type[3], char pa
     }
     //Para saber si hay particiones Extendias ya hechas 0 no hay y si es difente esque que ya hay
     int Ex = AD_hayExtendidas(mbr);
-
+    int inicio = sizeof(mbr);
     if(mbr.mbr_partition_1.part_status=='0')
     {
         if(mbr.mbr_partition_2.part_status!='0')
         {
-
+            if((tam + sizeof(mbr)) < mbr.mbr_partition_2.part_start)
+            {
+                mbr.mbr_partition_1.part_status = '1';
+                mbr.mbr_partition_1.part_size = tam;
+                mbr.mbr_partition_1.part_start = sizeof(mbr);
+                strcpy(mbr.mbr_partition_1.part_name,name);
+                strcpy(mbr.mbr_partition_1.part_fit,fit);
+                if(strcasecmp(type,"e")==0)
+                {
+                    mbr.mbr_partition_1.part_type = 'p';
+                    struct EBR ebr;
+                    ebr.part_next = -1;
+                    ebr.part_start = sizeof(mbr)+sizeof(ebr);
+                    ebr.part_status = '0';
+                    fseek(disco,sizeof(mbr),SEEK_SET); /****/
+                    fwrite(&ebr, sizeof(ebr), 1, disco); /****/
+                    fseek(disco,0,SEEK_SET);
+                    fwrite(&mbr,sizeof(mbr),1,disco); /****/
+                    fclose(disco);
+                    printf("Parcion Extendida Creada: %s \n",name);
+                    return;
+                }
+                mbr.mbr_partition_1.part_type = 'p';
+                fseek(disco, 0, SEEK_SET);
+                fwrite(&mbr, sizeof(mbr), 1, disco);
+                fclose(disco);
+                printf("Particon Primaria Creada: %s \n",name);
+                return;
+            }
+            else
+            {
+                inicio = mbr.mbr_partition_2.part_start + mbr.mbr_partition_2.part_size;
+            }
         }
         else if(mbr.mbr_partition_3.part_status!='0')
         {
-            printf("Particion 3 esta ocupada\n");
+            if((tam+sizeof(mbr)) < mbr.mbr_partition_3.part_start)
+            {
+                mbr.mbr_partition_1.part_status = '1';
+                mbr.mbr_partition_1.part_size = tam;
+                mbr.mbr_partition_1.part_start = sizeof(mbr);
+                strcpy(mbr.mbr_partition_1.part_name,name);
+                strcpy(mbr.mbr_partition_1.part_fit,fit);
+                if(strcasecmp(type,"e")==0)
+                {
+                    mbr.mbr_partition_1.part_type = 'e';
+                    struct EBR ebr;
+                    ebr.part_next = -1;
+                    ebr.part_start = sizeof(mbr) + sizeof(ebr);
+                    ebr.part_status = '0';
+                    fseek(disco,sizeof(mbr),SEEK_SET); /****/
+                    fwrite(&ebr, sizeof(ebr), 1, disco); /****/
+                    fseek(disco,0,SEEK_SET);
+                    fwrite(&mbr,sizeof(mbr),1,disco); /****/
+                    fclose(disco);
+                    printf("Parcion Extendida Creada: %s \n",name);
+                    return;
+                }
+                mbr.mbr_partition_1.part_type = 'p';
+                fseek(disco, 0, SEEK_SET);
+                fwrite(&mbr, sizeof(mbr), 1, disco);
+                fclose(disco);
+                printf("Particon Primaria Creada: %s \n",name);
+                return;
+            }
+            else
+            {
+                inicio = mbr.mbr_partition_3.part_start + mbr.mbr_partition_3.part_size;
+            }
         }
         else if(mbr.mbr_partition_4.part_status!='0')
         {
-            printf("Parcion 4 esta ocupada\n");
+            if((tam+sizeof(mbr)) < mbr.mbr_partition_4.part_start)
+            {
+                mbr.mbr_partition_1.part_status = '1';
+                mbr.mbr_partition_1.part_size = tam;
+                mbr.mbr_partition_1.part_start = sizeof(mbr);
+                strcpy(mbr.mbr_partition_1.part_name,name);
+                strcpy(mbr.mbr_partition_1.part_fit,fit);
+                if(strcasecmp(type,"e")==0)
+                {
+                    mbr.mbr_partition_1.part_type = 'e';
+                    struct EBR ebr;
+                    ebr.part_next = -1;
+                    ebr.part_start = sizeof(mbr) + sizeof(ebr);
+                    ebr.part_status = '0';
+                    fseek(disco,sizeof(mbr),SEEK_SET); /****/
+                    fwrite(&ebr, sizeof(ebr), 1, disco); /****/
+                    fseek(disco,0,SEEK_SET);
+                    fwrite(&mbr,sizeof(mbr),1,disco); /****/
+                    fclose(disco);
+                    printf("Parcion Extendida Creada: %s \n",name);
+                    return;
+                }
+                mbr.mbr_partition_1.part_type = 'p';
+                fseek(disco, 0, SEEK_SET);
+                fwrite(&mbr, sizeof(mbr), 1, disco);
+                fclose(disco);
+                printf("Particon Primaria Creada: %s \n",name);
+                return;
+            }
+            else
+            {
+                inicio = mbr.mbr_partition_4.part_start + mbr.mbr_partition_4.part_size;
+            }
         }
         else
         {
             mbr.mbr_partition_1.part_status = '1';
             mbr.mbr_partition_1.part_size = tam;
-            mbr.mbr_partition_1.part_start = sizeof(mbr)+1;
+            mbr.mbr_partition_1.part_start = sizeof(mbr); /****/
             strcpy(mbr.mbr_partition_1.part_name,name);
             strcpy(mbr.mbr_partition_1.part_fit,fit);
+            if(strcasecmp(type,"e")==0)
+            {
+                if(Ex==0)
+                {
+                    /*** Escrio la partcion extendida y le agreso el ebr ***/
+                    mbr.mbr_partition_1.part_type = 'e';
+                    struct EBR ebr;
+                    ebr.part_next = -1;
+                    ebr.part_start = sizeof(mbr)+sizeof(ebr); /****/
+                    ebr.part_status = '0';
+                    fseek(disco,sizeof(mbr),SEEK_SET); /****/
+                    fwrite(&ebr, sizeof(ebr), 1, disco); /****/
+                    fseek(disco,0,SEEK_SET);
+                    fwrite(&mbr,sizeof(mbr),1,disco); /****/
+                    fclose(disco);
+                    printf("Parcion Extendida Creada: %s \n",name);
+                    return;
+                }
+                else
+                {
+                    printf("Error solo puede haber una particion Extendida \n");
+                    fclose(disco);
+                    return;
+                }
+            }
+            mbr.mbr_partition_1.part_type = 'p';
+            fseek(disco, 0, SEEK_SET);
+            fwrite(&mbr, sizeof(mbr), 1, disco);
+            fclose(disco);
+            printf("Particon Primaria Creada: %s \n",name);
+            return;
         }//Fine de los fi
 
+    }
+    else
+    {
+        inicio = mbr.mbr_partition_1.part_start + mbr.mbr_partition_1.part_size;
     }//fin particon 1
+
+    if(mbr.mbr_partition_2.part_status=='0')
+    {
+        printf("Aqui se crea la segunda particion \n");
+    }
 
     fclose(disco);
 }
@@ -106,7 +242,7 @@ int AD_hayExtendidas(MBR mbr)
 
     if(mbr.mbr_partition_1.part_status!='0')
     {
-        if(strcasecmp(mbr.mbr_partition_1.part_type,"e")==0)
+        if(mbr.mbr_partition_1.part_type == 'e')
         {
             resultado++;
         }
@@ -114,7 +250,7 @@ int AD_hayExtendidas(MBR mbr)
 
     if(mbr.mbr_partition_2.part_status!='0')
     {
-        if(strcasecmp(mbr.mbr_partition_2.part_type,"e")==0)
+        if(mbr.mbr_partition_2.part_type == 'e')
         {
             resultado++;
         }
@@ -122,7 +258,7 @@ int AD_hayExtendidas(MBR mbr)
 
     if(mbr.mbr_partition_3.part_status!='0')
     {
-        if(strcasecmp(mbr.mbr_partition_3.part_type,"e")==0)
+        if(mbr.mbr_partition_3.part_type == 'e')
         {
             resultado++;
         }
@@ -130,7 +266,7 @@ int AD_hayExtendidas(MBR mbr)
 
     if(mbr.mbr_partition_4.part_status!='0')
     {
-        if(strcasecmp(mbr.mbr_partition_4.part_type,"e")==0)
+        if(mbr.mbr_partition_4.part_type == 'e')
         {
             resultado++;
         }
