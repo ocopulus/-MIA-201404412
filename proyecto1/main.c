@@ -12,6 +12,16 @@ int main()
     srand(time(NULL));
     bool menu = true;
     int i = 1;
+    int a;
+    for(a=0;a<20;a++)
+    {
+        discos[a].activa = 0;
+        int b;
+        for(b=0;b<6;b++)
+        {
+            discos[a].particiones[b].activa = 0;
+        }
+    }
     while (menu)
     {
         Lexico_entrada();

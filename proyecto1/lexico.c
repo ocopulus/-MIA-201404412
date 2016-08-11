@@ -17,6 +17,30 @@ void Lexico_entrada()
     Lexico_analisador(comando);
 }
 
+void Lexico_script(char path[500])
+{
+    char cadena[1000];
+    FILE *archivo;
+    archivo = fopen (path, "r");
+    if(archivo == NULL)
+    {
+        printf("¡El Script no se entonctro en la ruta espesificada!\n");
+        return;
+    }
+    while (fgets(cadena,sizeof(cadena),archivo) != NULL)
+    {
+        if(cadena[0]=='#')
+        {
+            printf("Comentario: %s",cadena);
+        }
+        else
+        {
+            printf("Sentencia: %s",cadena);
+            Lexico_analisador(cadena);
+        }
+    }
+}
+
 void Lexico_analisador(char comando[500])
 {
     const char delimitador[2] = " ";
@@ -37,6 +61,7 @@ void Lexico_analisador(char comando[500])
     char eliminar[6]="\0";
     char add[20]="\0";
     char umount[8]="\0";
+    char id[20]="\0";
     /*** Fin ***/
 
     if(strcasecmp(token,"mkdisk")==0)
@@ -309,25 +334,20 @@ void Lexico_analisador(char comando[500])
     }//fin el if de FDISK
     else if(strcasecmp(token,"mount")==0)
     {
-        token = strtok(NULL,"::");
+        token = strtok(NULL," ::");
         while(token!=NULL)
         {
             if(strcasecmp(token,"-path")==0)
             {
-                token = strtok(NULL," ");
-                token+=2;
-                if(token[strlen(token)-1]=='\"')
-                {
-                    token[strlen(token)-1]='\0';
-                }
+                token = strtok(NULL,"\"");
+                token = strtok(NULL,"\"");
                 strcpy(dir_disco,token);
                 printf("Tengo esto del paht: %s\n",dir_disco);/*** Lo tengo que quitar ***/
-
             }
             else if(strcasecmp(token,"-name")==0)
             {
-                token = strtok(NULL," ");
-                token++;
+                token = strtok(NULL,"\"");
+                token = strtok(NULL,"\"");
                 strcpy(name,token);
                 printf("El nombre es: %s\n",token);/*** Esto lo tengo que borrar ***/
             }
@@ -335,8 +355,18 @@ void Lexico_analisador(char comando[500])
             {
                 printf("No se reconocio el Parametro: %s",token);
             }
-            token = strtok(NULL,"::");
+            token = strtok(NULL," ::");
         }//fin del while
+        /****** Acciones yolo ******/
+        if(strcasecmp(dir_disco,"")!=0 & strcasecmp(name,"")!=0)
+        {
+            Lexico_Montar(dir_disco,name);
+        }
+        else
+        {
+            printf("Lista de Particiones Montadas:\n");
+            Lexico_MostrarParticionesMontadas();
+        }
     }//fin del if de MOUNT
     else if(strcasecmp(token,"umount")==0)
     {
@@ -353,8 +383,201 @@ void Lexico_analisador(char comando[500])
             token = strtok(NULL,"::");
         }
     }
+    else if(strcasecmp(token,"exec")==0)
+    {
+        token = strtok(NULL,"::");
+        if(strcasecmp(token,"-path")==0)
+        {
+            token = strtok(NULL," ");
+            token++;
+            /*** Accion de ejecutar el script  ***/
+            Lexico_script(token);
+        }
+        else
+        {
+            printf("Se esperaba -path:: ¬¬¬¬\n");
+        }
+    }
+    else if(strcasecmp(token,"rep")==0)
+    {
+        token = strtok(NULL," ::");
+        while(token != NULL)
+        {
+            if(strcasecmp(token,"-name")==0)
+            {
+                token = strtok(NULL," ");
+                token++;
+                strcpy(name,token);
+                printf("Tengo en name: %s\n",name);
+            }
+            else if(strcasecmp(token,"-path")==0)
+            {
+                token = strtok(NULL,"\"");
+                token = strtok(NULL,"\"");
+                strcpy(dir_disco,token);
+                printf("Tengo en path: %s\n",dir_disco);
+            }
+            else if(strcasecmp(token,"-id")==0)
+            {
+                token = strtok(NULL," ");
+                token++;
+                strcpy(id,token);
+                printf("Tengo en le id: %s\n",id);
+            }
+            else
+            {
+                printf("No se reconocio esto: %s\n",token);
+            }
+            token = strtok(NULL," ::");
+        }
+        /*** ACCIONES DEL COMANDO REP ***/
+        if(strcasecmp(name,"")!=0 & strcasecmp(dir_disco,"")!=0 & strcasecmp(id,"")!=0)
+        {
+            Lexico_Rep(dir_disco,name,id);
+        }
+        else
+        {
+            printf("Faltan paremetros obligatorios\n");
+        }
+    }
     else
     {
         printf("No se reconocio el comando principal\n");
     }
+}
+
+void Lexico_Montar(char path[500],char nombre[50])
+{
+    int i;
+    char letras[] = "abcdefghijkmlñopqrstuvwxyz";
+    FILE *disco;
+    disco = fopen (path, "rb+");
+    if(disco == NULL)
+    {
+        printf("No se puede abrir el diso o no existe\n");
+        return;
+    }
+    struct MBR mbr;
+    fread (&mbr, sizeof(mbr), 1,disco);
+    if((mbr.mbr_partition_1.part_status!='0') & (strcasecmp(mbr.mbr_partition_1.part_name,nombre)==0))
+    {
+
+    }
+    else if((mbr.mbr_partition_2.part_status!='0') & (strcasecmp(mbr.mbr_partition_2.part_name,nombre)==0))
+    {
+
+    }
+    else if((mbr.mbr_partition_3.part_status!='0') & (strcasecmp(mbr.mbr_partition_3.part_name,nombre)==0))
+    {
+
+    }
+    else if((mbr.mbr_partition_4.part_status!='0') & (strcasecmp(mbr.mbr_partition_4.part_name,nombre)==0))
+    {
+
+    }
+    else
+    {
+        printf("Error no se encontro la particon inidicada\n");
+        return;
+    }
+    for(i=0; i<20; i++)
+    {
+        if(discos[i].activa==1) //Miramos si ya hay un disco montado
+        {
+            if(strcasecmp(discos[i].path,path)==0) //miramos si tiene a misma ruta
+            {
+                int f;
+                for(f=0; f<6;f++)
+                {
+                    if(discos[i].particiones[f].activa==1) //miramos si la particon esta activa
+                    {
+                        if(strcasecmp(discos[i].particiones[f].nombre,nombre)==0)
+                        {
+                            printf("La particon de este disco ya fue montada\n");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        discos[i].particiones[f].activa = 1;
+                        strcpy(discos[i].particiones[f].nombre,nombre);
+                        char let = letras[i];
+                        sprintf(discos[i].particiones[f].id,"%s%c%d","vd",let,f);
+                        printf("Se le asigno el id: %s\n",discos[i].particiones[f].id);
+                        return;
+                    }
+                }
+            }
+        }
+        else
+        {
+            discos[i].activa = 1;
+            strcpy(discos[i].path,path);
+            discos[i].particiones[0].activa = 1;
+            strcpy(discos[i].particiones[0].nombre,nombre);
+            char let = letras[i];
+            sprintf(discos[i].particiones[0].id,"%s%c%d","vd",let,0);
+            printf("Se le asigno el id: %s\n",discos[i].particiones[0].id);
+            return;
+        }
+    }
+    fclose(disco);
+}
+
+void Lexico_MostrarParticionesMontadas()
+{
+    int i;
+    for(i=0;i<20;i++)
+    {
+        if(discos[i].activa==1)
+        {
+            int f;
+            for(f=0;f<6;f++)
+            {
+                if(discos[i].particiones[f].activa==1)
+                {
+                    printf("\t# id::%s -path::%s -name::%s",discos[i].particiones[f].id,discos[i].path,discos[i].particiones[f].nombre);
+                }
+            }
+        }
+    }
+}
+
+void Lexico_Rep(char dir_disco[200], char name[50], char id[20])
+{
+    int i;
+    for(i=0; i<20; i++)
+    {
+        if(discos[i].activa==1)
+        {
+            int f;
+            for(f=0; f<6; f++)
+            {
+                if(discos[i].particiones[f].activa==1)
+                {
+                    if(strcasecmp(discos[i].particiones[f].id,id)==0)
+                    {
+                        if(strcasecmp(name,"mbr")==0)
+                        {
+                            printf("Se crear el reporte del MBR del disco\n");
+
+                            return;
+                        }
+                        else if(strcasecmp(name,"disk")==0)
+                        {
+                            printf("Se crear el reporte del DISK del disco\n");
+                            /*** Accion a implementar ***/
+                            return;
+                        }
+                        else
+                        {
+                            printf("Ester reporte no se reconocio puede que falte de implementar o Es un Error: %s",name);
+                        }
+                        return;
+                    }
+                }
+            }
+        }
+    }
+    printf("Error no se encontro el id: %s espesificado\n",id);
 }
