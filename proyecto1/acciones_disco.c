@@ -790,7 +790,7 @@ void AD_CrearParticionLogica(FILE *disk,int inicio, int fin,char name[50], int t
     fseek(disk,inicio,SEEK_SET);
     fread(&ebr, sizeof(ebr), 1, disk);
 
-    if(ebr.part_next!=-1)
+    if(ebr.part_next==-1)
     {
         if((inicio+sizeof(ebr)+tam) < fin)
         {
