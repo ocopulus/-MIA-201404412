@@ -36,6 +36,10 @@ void Lexico_script(char path[500])
         else
         {
             printf("Sentencia: %s",cadena);
+            if(cadena[strlen(cadena)-1]=='\n')
+            {
+                cadena[strlen(cadena)-1]='\0';
+            }
             Lexico_analisador(cadena);
         }
     }
@@ -173,7 +177,7 @@ void Lexico_analisador(char comando[500])
     }//fin del if de RMDISK
     else if(strcasecmp(token,"fdisk")==0)
     {
-        token = strtok(NULL, "::");
+        token = strtok(NULL, " ::");
         while(token!=NULL)
         {
             if(strcasecmp(token,"-size")==0)
@@ -191,12 +195,8 @@ void Lexico_analisador(char comando[500])
             }
             else if(strcasecmp(token,"-path")==0)
             {
-                token = strtok(NULL," ");
-                token+=2;
-                if(token[strlen(token)-1]=='\"')
-                {
-                    token[strlen(token)-1]='\0';
-                }
+                token = strtok(NULL,"\"");
+                token = strtok(NULL,"\"");
                 strcpy(dir_disco,token);
                 printf("Tengo esto del paht: %s\n",dir_disco);/*** Lo tengo que quitar ***/
             }
@@ -223,12 +223,8 @@ void Lexico_analisador(char comando[500])
             }
             else if(strcasecmp(token,"-name")==0)
             {
-                token = strtok(NULL," ");
-                token+=2;
-                if(token[strlen(token)-1]=='\"')
-                {
-                    token[strlen(token)-1]='\0';
-                }
+                token = strtok(NULL,"\"");
+                token = strtok(NULL,"\"");
                 strcpy(name,token);
                 printf("El nombre es: %s\n",token);/*** Esto lo tengo que borrar ***/
             }
@@ -243,7 +239,7 @@ void Lexico_analisador(char comando[500])
             {
                 printf("No se reconocio el parametro: %s\n",token);
             }
-            token = strtok(NULL,"::");
+            token = strtok(NULL," ::");
         }//fin del while
         /*** Aqui validamos y hacemos las acciones para es comando -size +unit -path +type ***/
         if(strcasecmp(tam,"")!=0 & strcasecmp(dir_disco,"")!=0 & strcasecmp(name,"")!=0)
@@ -298,14 +294,9 @@ void Lexico_analisador(char comando[500])
                 return;
             }
 
-            if(strcasecmp(eliminar,"fast")==0)
+            if(strcasecmp(eliminar,"fast")==0 | strcasecmp(eliminar,"full")==0)
             {
-                /*** Metodo para eliminar rapido ***/
-                return;
-            }
-            else if(strcasecmp(eliminar,"full")==0)
-            {
-                /*** Metodo para eliminar completo ***/
+                AD_EliminarParticon(eliminar,dir_disco,name);
                 return;
             }
             else if(strcasecmp(eliminar,"\0")==0)
@@ -385,11 +376,12 @@ void Lexico_analisador(char comando[500])
     }
     else if(strcasecmp(token,"exec")==0)
     {
-        token = strtok(NULL,"::");
+        token = strtok(NULL," ::");
         if(strcasecmp(token,"-path")==0)
         {
-            token = strtok(NULL," ");
-            token++;
+            token = strtok(NULL,"\"");
+            token = strtok(NULL,"\"");
+            printf("Entogo en el Pat: %s\n",token);
             /*** Accion de ejecutar el script  ***/
             Lexico_script(token);
         }
@@ -560,7 +552,7 @@ void Lexico_Rep(char dir_disco[200], char name[50], char id[20])
                         if(strcasecmp(name,"mbr")==0)
                         {
                             printf("Se crear el reporte del MBR del disco\n");
-
+                            Rep_mbr(discos[i].path,dir_disco);
                             return;
                         }
                         else if(strcasecmp(name,"disk")==0)

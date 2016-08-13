@@ -23,9 +23,35 @@ void AD_crearDisco(char dir_disco[200], char name[50], int tam)
     time(&mbr.mbr_fecha_creacion);
     mbr.mbr_disk_signature = rand()%25+1; //cambiar por un numero ramdon
     mbr.mbr_partition_1.part_status = '0';
+    strcpy(mbr.mbr_partition_1.part_fit,"0");
+    strcpy(mbr.mbr_partition_1.part_name,"0");
+    mbr.mbr_partition_1.part_size = 0;
+    mbr.mbr_partition_1.part_start = 0;
+    mbr.mbr_partition_1.part_type = '0';
     mbr.mbr_partition_2.part_status = '0';
+    strcpy(mbr.mbr_partition_2.part_fit,"0");
+    strcpy(mbr.mbr_partition_2.part_name,"0");
+    mbr.mbr_partition_2.part_size = 0;
+    mbr.mbr_partition_2.part_start = 0;
+    mbr.mbr_partition_2.part_type = '0';
     mbr.mbr_partition_3.part_status = '0';
+    strcpy(mbr.mbr_partition_3.part_fit,"0");
+    strcpy(mbr.mbr_partition_3.part_name,"0");
+    mbr.mbr_partition_3.part_size = 0;
+    mbr.mbr_partition_3.part_start = 0;
+    mbr.mbr_partition_3.part_type = '0';
     mbr.mbr_partition_4.part_status = '0';
+    strcpy(mbr.mbr_partition_4.part_fit,"0");
+    strcpy(mbr.mbr_partition_4.part_name,"0");
+    mbr.mbr_partition_4.part_size = 0;
+    mbr.mbr_partition_4.part_start = 0;
+    mbr.mbr_partition_4.part_type = '0';
+
+    if(tam*1024 < 10485760)
+    {
+        printf("El disco no se pudo crear porque tiene que tener un tamaño minimo de 10 MB\n");
+        return;
+    }
 
     char dir[500];
     strcat(dir,dir_disco);
@@ -63,10 +89,53 @@ void AD_CrearParticion(char name[50],int tam, char fit[3], char type[3], char pa
         return;
     }
 
+    if(tam<2097152)
+    {
+        printf("No se puede crear la Particion, tiene que tener una Minimo de 2 MB.\n");
+        return;
+    }
+
     if(strcasecmp(type,"l")==0)
     {
         //Metodo para crear la marticion Logica
-        printf("Tengo que crear la logica\n falta implementar");
+        int ex = AD_hayExtendidas(mbr);
+        if(ex!=0)
+        {
+            int numpar = AD_Extendida(mbr);
+            if(numpar == 1)
+            {
+                AD_CrearParticionLogica(disco,mbr.mbr_partition_1.part_start,mbr.mbr_partition_1.part_start+mbr.mbr_partition_1.part_size,name,tam,fit);
+                fclose(disco);
+                return;
+            }
+            else if(numpar == 2)
+            {
+                AD_CrearParticionLogica(disco,mbr.mbr_partition_2.part_start,mbr.mbr_partition_2.part_start+mbr.mbr_partition_2.part_size,name,tam,fit);
+                fclose(disco);
+                return;
+            }
+            else if(numpar == 3)
+            {
+                AD_CrearParticionLogica(disco,mbr.mbr_partition_3.part_start,mbr.mbr_partition_3.part_start+mbr.mbr_partition_3.part_size,name,tam,fit);
+                fclose(disco);
+                return;
+            }
+            else if(numpar == 4)
+            {
+                AD_CrearParticionLogica(disco,mbr.mbr_partition_4.part_start,mbr.mbr_partition_4.part_start+mbr.mbr_partition_4.part_size,name,tam,fit);
+                fclose(disco);
+                return;
+            }
+            else
+            {
+                printf("Yolo paso algo trambolico no encontre la partcion xD\n");
+            }
+
+        }
+        else
+        {
+            printf("Debe de crear un particion Extendida primero para poder crear particiones logicas xD\n");
+        }
         return;
     }
     //Para saber si hay particiones Extendias ya hechas 0 no hay y si es difente esque que ya hay
@@ -593,4 +662,167 @@ int AD_hayExtendidas(MBR mbr)
         }
     }
     return resultado;
+}
+
+int AD_Extendida(MBR mbr)
+{
+    int resultado = 0;
+    if(mbr.mbr_partition_1.part_status!='0')
+    {
+        if(mbr.mbr_partition_1.part_type == 'e')
+        {
+            return 1;
+        }
+    }
+
+    if(mbr.mbr_partition_2.part_status!='0')
+    {
+        if(mbr.mbr_partition_2.part_type == 'e')
+        {
+            return 2;
+        }
+    }
+
+    if(mbr.mbr_partition_3.part_status!= '0')
+    {
+        if(mbr.mbr_partition_3.part_type == 'e')
+        {
+            return 3;
+        }
+    }
+
+    if(mbr.mbr_partition_4.part_type == '0')
+    {
+        if(mbr.mbr_partition_4.part_type == 'e')
+        {
+            return 4;
+        }
+    }
+
+    return resultado;
+}
+
+void AD_EliminarParticon(char del[6],char dir_disco[200], char name[50])
+{
+    struct MBR mbr;
+    FILE *disco;
+    disco = fopen (dir_disco, "rb+");
+    if( disco == NULL)
+    {
+        printf("¡El Disco no existe!\n");
+        return;
+    }
+    fread (&mbr, sizeof(mbr), 1,disco);
+    printf("Esta seguro que quiere ELIMINAR la particon????? S = 1/N = 0 \n");
+    int si;
+    scanf("%i", &si);
+    if(si==0)
+    {
+        printf("Se cancelo la operacion de Eliminar\n");
+        return;
+    }
+
+    struct particion *par;
+    if(strcasecmp(mbr.mbr_partition_1.part_name,name)==0)
+    {
+        par = &mbr.mbr_partition_1;
+    }
+    else if(strcasecmp(mbr.mbr_partition_2.part_name,name)==0)
+    {
+        par = &mbr.mbr_partition_2;
+    }
+    else if(strcasecmp(mbr.mbr_partition_3.part_name,name)==0)
+    {
+        par = &mbr.mbr_partition_3;
+    }
+    else if(strcasecmp(mbr.mbr_partition_4.part_name,name)==0)
+    {
+        par = &mbr.mbr_partition_4;
+    }
+    else
+    {
+        par = NULL;
+    }
+
+    if(par!=NULL)
+    {
+        if(strcasecmp(del,"fast")==0)
+        {
+            par->part_status = '0';
+            /*par->part_type = '0';
+            strcpy(par->part_fit,"0");
+            par->part_start = 0;
+            par->part_size = 0;
+            strcpy(par->part_name,"0");*/
+            fseek(disco,0,SEEK_SET);
+            fwrite(&mbr,sizeof(mbr),1,disco);
+            fclose(disco);
+            printf("La particion: %s Fue eliminada FAST\n",name);
+            return;
+        }
+        else if(strcasecmp(del,"full")==0)
+        {
+            par->part_status = '0';
+            fseek(disco,par->part_start,SEEK_SET);
+            int i;
+            char es[1];
+            for(i=0; i < par->part_size; i++)
+            {
+                fwrite(es,sizeof(es),1,disco);
+            }
+            fseek(disco,0,SEEK_SET);
+            fwrite(&mbr,sizeof(mbr),1,disco);
+            fclose(disco);
+            printf("La particion: %s Fue eliminada FULL\n",name);
+            return;
+        }
+    }
+    else
+    {
+        /*** Talves es logica hay que buscala y programar ***/
+    }
+}
+
+void AD_CrearParticionLogica(FILE *disk,int inicio, int fin,char name[50], int tam,char fit[3])
+{
+    struct EBR ebr;
+    struct EBR newebr;
+    fseek(disk,inicio,SEEK_SET);
+    fread(&ebr, sizeof(ebr), 1, disk);
+
+    if(ebr.part_next!=-1)
+    {
+        if((inicio+sizeof(ebr)+tam) < fin)
+        {
+            ebr.part_status = '1';
+            ebr.part_next = inicio + sizeof(ebr)+tam;
+            ebr.part_start = inicio+sizeof(ebr);
+            ebr.part_size = tam;
+            strcpy(ebr.part_fit,fit);
+            strcpy(ebr.part_name,name);
+
+            newebr.part_next = -1;
+            newebr.part_start = inicio + sizeof(ebr)+tam;
+            newebr.part_status = '0';
+            newebr.part_size = 0;
+            strcpy(newebr.part_fit,"0");
+            strcpy(ebr.part_name,"0");
+            fseek(disk,inicio,SEEK_SET);
+            fwrite(&ebr,sizeof(ebr),1,disk);
+            fseek(disk,ebr.part_next,SEEK_SET);
+            fwrite(&newebr,sizeof(newebr),1,disk);
+            printf("Se creo la particon Logica: %s \n",name);
+            return;
+        }
+        else
+        {
+            printf("No hay espacio Disponible para hacer la particon logica: %s\n",name);
+            return;
+        }
+
+    }
+    else
+    {
+        AD_CrearParticionLogica(disk,ebr.part_next,fin,name,tam,fit);
+    }
 }

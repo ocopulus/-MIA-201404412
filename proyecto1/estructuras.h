@@ -22,7 +22,7 @@ typedef struct MBR {
 
 typedef struct EBR{
     char part_status;
-    char part_fit;
+    char part_fit[3];
     int part_start;
     int part_size;
     int part_next;

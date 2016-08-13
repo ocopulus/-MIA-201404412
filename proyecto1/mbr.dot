@@ -1,0 +1,118 @@
+digraph MBR{
+node[shape=record];
+a0 [label=<<TABLE border="1" cellspacing="1" cellpadding="1"  >
+<TR>
+<TD border="1" >Nombre: </TD>
+<TD border="1" >Valor:  </TD>
+</TR>
+<TR>
+<TD border="1" >mbr_tamaño: </TD>
+<TD border="1" >20971520  </TD>
+</TR>
+<TR>
+<TD border="1" >mbr_fecha_creacion: </TD>
+<TD border="1" >Fri Aug 12 20:05:35 2016
+  </TD>
+</TR>
+<TR>
+<TD border="1" >mbr_disk_signature: </TD>
+<TD border="1" >12  </TD>
+</TR>
+<TR>
+<TD border="1" >part_status_1:  </TD>
+<TD border="1" >1  </TD>
+</TR>
+<TR>
+<TD border="1" >part_type_1:</TD>
+<TD border="1" >p  </TD>
+</TR>
+<TR>
+<TD border="1" >part_fit_1: </TD>
+<TD border="1" >wf  </TD>
+</TR>
+<TR>
+<TD border="1" >part_start_1: </TD>
+<TD border="1" >152  </TD>
+</TR>
+<TR>
+<TD border="1" >part_size_1: </TD>
+<TD border="1" >5242880  </TD>
+</TR>
+<TR>
+<TD border="1" >part_name_1: </TD>
+<TD border="1" >nueva1  </TD>
+</TR>
+<TR>
+<TD border="1" >part_status_2: </TD>
+<TD border="1" >1  </TD>
+</TR>
+<TR>
+<TD border="1" >part_type_2:</TD>
+<TD border="1" >e  </TD>
+</TR>
+<TR>
+<TD border="1" >part_fit_2: </TD>
+<TD border="1" >wf  </TD>
+</TR>
+<TR>
+<TD border="1" >part_start_2: </TD>
+<TD border="1" >5243032  </TD>
+</TR>
+<TR>
+<TD border="1" >part_size_2: </TD>
+<TD border="1" >10485760  </TD>
+</TR>
+<TR>
+<TD border="1" >part_name_2: </TD>
+<TD border="1" >nueva2  </TD>
+</TR>
+<TR>
+<TD border="1" >part_status_3: </TD>
+<TD border="1" >0  </TD>
+</TR>
+<TR>
+<TD border="1" >part_type_3:</TD>
+<TD border="1" >0  </TD>
+</TR>
+<TR>
+<TD border="1" >part_fit_3: </TD>
+<TD border="1" >0  </TD>
+</TR>
+<TR>
+<TD border="1" >part_start_3: </TD>
+<TD border="1" >0  </TD>
+</TR>
+<TR>
+<TD border="1" >part_size_3: </TD>
+<TD border="1" >0  </TD>
+</TR>
+<TR>
+<TD border="1" >part_name_3: </TD>
+<TD border="1" >0  </TD>
+</TR>
+<TR>
+<TD border="1" >part_status_4: </TD>
+<TD border="1" >0  </TD>
+</TR>
+<TR>
+<TD border="1" >part_type_4:</TD>
+<TD border="1" >0  </TD>
+</TR>
+<TR>
+<TD border="1" >part_fit_4: </TD>
+<TD border="1" >0  </TD>
+</TR>
+<TR>
+<TD border="1" >part_start_4: </TD>
+<TD border="1" >0  </TD>
+</TR>
+<TR>
+<TD border="1" >part_size_4: </TD>
+<TD border="1" >0  </TD>
+</TR>
+<TR>
+<TD border="1" >part_name_4: </TD>
+<TD border="1" >0  </TD>
+</TR>
+</TABLE>>];
+}

@@ -7,6 +7,7 @@
 #include <math.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include "estructuras.h"
 
 void Rep_mbr(char dir[200], char dir_rep[200]);
 

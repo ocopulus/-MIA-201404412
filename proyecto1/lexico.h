@@ -8,6 +8,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include "acciones_disco.h"
+#include "reportes.h"
 
 typedef struct par{
     int activa;
