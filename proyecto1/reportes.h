@@ -10,5 +10,9 @@
 #include "estructuras.h"
 
 void Rep_mbr(char dir[200], char dir_rep[200]);
+void Rep_log(FILE *disk,struct EBR ebr,FILE *rep);
+int Rep_hayExtendidas(MBR mbr);
+int Rep_Extendida(MBR mbr);
+void Rep_disk(char dir[200], char dir_rep[200]);
 
 #endif // REPORTES

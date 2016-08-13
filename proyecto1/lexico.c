@@ -157,6 +157,7 @@ void Lexico_analisador(char comando[500])
             {
                 token[strlen(token)-1]='\0';
             }
+
             strcpy(dir_disco,token);
             printf("Tengo esto del paht: %s\n",dir_disco);/*** Lo tengo que quitar ***/
             /*** Acemos la accion de Eliminar ***/
@@ -397,8 +398,8 @@ void Lexico_analisador(char comando[500])
         {
             if(strcasecmp(token,"-name")==0)
             {
-                token = strtok(NULL," ");
-                token++;
+                token = strtok(NULL,"\"");
+                token = strtok(NULL,"\"");
                 strcpy(name,token);
                 printf("Tengo en name: %s\n",name);
             }
@@ -558,7 +559,7 @@ void Lexico_Rep(char dir_disco[200], char name[50], char id[20])
                         else if(strcasecmp(name,"disk")==0)
                         {
                             printf("Se crear el reporte del DISK del disco\n");
-                            /*** Accion a implementar ***/
+                            Rep_disk(discos[i].path,dir_disco);
                             return;
                         }
                         else

@@ -9,7 +9,7 @@
 	<stdbool.h>
 	"lexico.h"
 
-1471053888 source:/home/juan/Escritorio/Proyecto/-MIA-201404412/proyecto1/lexico.c
+1471066790 source:/home/juan/Escritorio/Proyecto/-MIA-201404412/proyecto1/lexico.c
 	"lexico.h"
 
 1470959286 /home/juan/Escritorio/Proyecto/-MIA-201404412/proyecto1/lexico.h
@@ -38,10 +38,10 @@
 
 1471046696 /home/juan/Escritorio/Proyecto/-MIA-201404412/proyecto1/estructuras.h
 
-1471009833 source:/home/juan/Escritorio/Proyecto/-MIA-201404412/proyecto1/reportes.c
+1471066394 source:/home/juan/Escritorio/Proyecto/-MIA-201404412/proyecto1/reportes.c
 	"reportes.h"
 
-1470956884 /home/juan/Escritorio/Proyecto/-MIA-201404412/proyecto1/reportes.h
+1471065198 /home/juan/Escritorio/Proyecto/-MIA-201404412/proyecto1/reportes.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>

@@ -1,0 +1,10 @@
+digraph DISk{
+subgraph sub {
+node[shape=record];
+MBR[label=" MBR "];
+p1[label=" Nombre: nueva1 \n type: p "];
+p2[label=" Nombre: nueva2 \n type: e "];
+p3[label=" LIBRE "];
+p4[label=" LIBRE "];
+}
+}

@@ -11,12 +11,12 @@ a0 [label=<<TABLE border="1" cellspacing="1" cellpadding="1"  >
 </TR>
 <TR>
 <TD border="1" >mbr_fecha_creacion: </TD>
-<TD border="1" >Fri Aug 12 20:05:35 2016
+<TD border="1" >Fri Aug 12 21:25:55 2016
   </TD>
 </TR>
 <TR>
 <TD border="1" >mbr_disk_signature: </TD>
-<TD border="1" >12  </TD>
+<TD border="1" >1  </TD>
 </TR>
 <TR>
 <TD border="1" >part_status_1:  </TD>
@@ -112,6 +112,96 @@ a0 [label=<<TABLE border="1" cellspacing="1" cellpadding="1"  >
 </TR>
 <TR>
 <TD border="1" >part_name_4: </TD>
+<TD border="1" >0  </TD>
+</TR>
+</TABLE>>];
+a5243064 [label=<<TABLE border="1" cellspacing="1" cellpadding="1"  >
+<TR>
+<TD border="1" >Nombre: </TD>
+<TD border="1" >Valor  </TD>
+</TR>
+<TR>
+<TD border="1" >part_status_l: </TD>
+<TD border="1" >1  </TD>
+</TR>
+<TR>
+<TD border="1" >part_fit_l: </TD>
+<TD border="1" >wf  </TD>
+</TR>
+<TR>
+<TD border="1" >part_start_l: </TD>
+<TD border="1" >5243064  </TD>
+</TR>
+<TR>
+<TD border="1" >part_size_l: </TD>
+<TD border="1" >3145728  </TD>
+</TR>
+<TR>
+<TD border="1" >part_next_l: </TD>
+<TD border="1" >8388792  </TD>
+</TR>
+<TR>
+<TD border="1" >part_name_l: </TD>
+<TD border="1" >0  </TD>
+</TR>
+</TABLE>>];
+a8388824 [label=<<TABLE border="1" cellspacing="1" cellpadding="1"  >
+<TR>
+<TD border="1" >Nombre: </TD>
+<TD border="1" >Valor  </TD>
+</TR>
+<TR>
+<TD border="1" >part_status_l: </TD>
+<TD border="1" >1  </TD>
+</TR>
+<TR>
+<TD border="1" >part_fit_l: </TD>
+<TD border="1" >wf  </TD>
+</TR>
+<TR>
+<TD border="1" >part_start_l: </TD>
+<TD border="1" >8388824  </TD>
+</TR>
+<TR>
+<TD border="1" >part_size_l: </TD>
+<TD border="1" >4194304  </TD>
+</TR>
+<TR>
+<TD border="1" >part_next_l: </TD>
+<TD border="1" >12583128  </TD>
+</TR>
+<TR>
+<TD border="1" >part_name_l: </TD>
+<TD border="1" >0  </TD>
+</TR>
+</TABLE>>];
+a12583160 [label=<<TABLE border="1" cellspacing="1" cellpadding="1"  >
+<TR>
+<TD border="1" >Nombre: </TD>
+<TD border="1" >Valor  </TD>
+</TR>
+<TR>
+<TD border="1" >part_status_l: </TD>
+<TD border="1" >1  </TD>
+</TR>
+<TR>
+<TD border="1" >part_fit_l: </TD>
+<TD border="1" >wf  </TD>
+</TR>
+<TR>
+<TD border="1" >part_start_l: </TD>
+<TD border="1" >12583160  </TD>
+</TR>
+<TR>
+<TD border="1" >part_size_l: </TD>
+<TD border="1" >2097152  </TD>
+</TR>
+<TR>
+<TD border="1" >part_next_l: </TD>
+<TD border="1" >14680312  </TD>
+</TR>
+<TR>
+<TD border="1" >part_name_l: </TD>
 <TD border="1" >0  </TD>
 </TR>
 </TABLE>>];
